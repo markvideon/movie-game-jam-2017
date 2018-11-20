@@ -5,6 +5,9 @@
 [Bb]uilds/
 [Ss]creenshots/
 Assets/AssetStoreTools*
+Assets/[Ss]ounds*
+Assets/[Tt]extures*
+Assets/[Mm]odels*
 
 # Visual Studio cache directory
 .vs/
