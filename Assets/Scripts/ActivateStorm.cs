@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Mark for rearchitecture using delegates
 [RequireComponent(typeof(Rigidbody))]
 public class ActivateStorm : MonoBehaviour {
+
+    private delegate void TestDelegate();
+    private TestDelegate delegateInstance;
 
 	private MeshRenderer myMesh;
 	private Rigidbody myRb; 

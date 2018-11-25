@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
+//https://docs.unity3d.com/Manual/CollidersOverview.html
+[RequireComponent(typeof(AudioSource),typeof(Rigidbody))]
 public class CollisionNoise : MonoBehaviour {
 
 	[SerializeField] private List<string> collideWithTags;
