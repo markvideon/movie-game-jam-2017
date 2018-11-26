@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 
 /* 
- * SwarmList contains functions for the components of the
+ * Flocking contains functions for the components of the
  * common model for flocking behaviours: Seperation, Cohesion and
- * Alignment, as well as a data structure containing members of the flock
+ * Alignment, Seeking and Avoidance
  * 
- * SwarmList is coupled with SwarmMovement to produce the AI behaviour 
+ * Note: Alignment component currently requires use of RigidBody velocities
  */
 
 public static class Flocking {
