@@ -56,7 +56,8 @@ public class SwarmMovement : MonoBehaviour {
 		{
 			cohesion = Flocking.getCohesion (this.transform, neighbourRadius);
 			seperation = Flocking.getSeperation(this.transform, neighbourRadius);
-			alignment = Flocking.getAlignment(this.transform, neighbourRadius); 
+            alignment = Flocking.getAlignment(this.transform, neighbourRadius,
+                                             transform.parent.GetComponent<FlockParent>().flockVelocities); 
 		
 			// For future use cases where a goal does not fit the application context
 			if (goal) {

@@ -37,10 +37,20 @@ public static class Flocking {
 		return result;
 	}
 
-	public static Vector3 getAlignment(Transform queryingTransform, float neighbourhoodRadius) {
-		Vector3 result = new Vector3 (0f, 0f, 0f);
+	public static Vector3 getAlignment(Transform queryingTransform, float neighbourhoodRadius, Vector3[] flockVelocities) {
+		
+        Vector3 result = new Vector3 (0f, 0f, 0f);
 
         int neighbourCount = queryingTransform.parent.childCount -1;
+
+        if (flockVelocities.Length != (neighbourCount + 1)) {
+
+            #if UNITY_EDITOR
+                Debug.Log("Velocity list length did not flock member count!");
+            #endif
+
+            return result;
+        }
 
         // Proceed through all the children, no guarantee of sorted order
         for (int i = 0; i < neighbourCount + 1; i++)
@@ -48,27 +58,15 @@ public static class Flocking {
 
             float radius = Vector3.Distance (queryingTransform.position, queryingTransform.parent.GetChild(i).position);
 
-			if (radius < neighbourhoodRadius) 
+			if (radius < neighbourhoodRadius && queryingTransform != queryingTransform.parent.GetChild(i)) 
             {
-                if (queryingTransform != queryingTransform.parent.GetChild(i)) 
-                {
-                    Rigidbody rb = queryingTransform.parent.GetChild(i).GetComponent<Rigidbody>();
-
-                    if (rb) {
-                        result += rb.velocity;
-                    } else {
-                        Debug.Log("Expected rigidbody when calculating alignment component!");
-
-                        // Definition when not using RBs? Require some means of acquiring velocities
-                    }
-                } 
-			}
+                result += flockVelocities[i];
+            } 
+			
 		}
 
-		if (neighbourCount > 0) {
-			result /= neighbourCount;
-			result = Vector3.Normalize (result);
-		}
+		result /= neighbourCount;
+		result = Vector3.Normalize (result);
 
 		return result;
 	}
