@@ -13,10 +13,14 @@ using System.Collections.Generic;
 
 public static class Flocking {
 
-   	public static Vector3 getCohesion(Transform queryingTransform, float neighbourhoodRadius) {
+   	public static Vector3 getCohesion(Transform queryingTransform, float neighbourhoodRadius, bool normalise) {
 		
 		Vector3 result = new Vector3 (0f, 0f, 0f);
         int neighbourCount = queryingTransform.parent.childCount - 1;
+
+        if (neighbourCount < 1) {
+            return result;
+        }
 
         for (int i = 0; i < neighbourCount + 1; i++) {
             if (Vector3.Distance (queryingTransform.position, queryingTransform.parent.GetChild(i).position) < neighbourhoodRadius) {
@@ -24,20 +28,20 @@ public static class Flocking {
 			}
 		}
 
-        if (neighbourCount > 0) {
-			// Result is average position of neighbours
-            result /= neighbourCount;
+		// Result is average position of neighbours
+        result /= neighbourCount;
 
-			// Result is now vector from current position to that average position
-            result -= queryingTransform.position;
+	    // Result is now vector from current position to that average position
+        result -= queryingTransform.position;
 
-			result = Vector3.Normalize (result);
-		}
-			
+        if (normalise) {
+            result = Vector3.Normalize(result);
+        }
+		
 		return result;
 	}
 
-	public static Vector3 getAlignment(Transform queryingTransform, float neighbourhoodRadius, Vector3[] flockVelocities) {
+	public static Vector3 getAlignment(Transform queryingTransform, float neighbourhoodRadius, bool normalise, Vector3[] flockVelocities) {
 		
         Vector3 result = new Vector3 (0f, 0f, 0f);
 
@@ -66,15 +70,22 @@ public static class Flocking {
 		}
 
 		result /= neighbourCount;
-		result = Vector3.Normalize (result);
+
+        if (normalise) {
+            result = Vector3.Normalize(result);
+        }
 
 		return result;
 	}
 
-	public static Vector3 getSeperation(Transform queryingTransform, float neighbourhoodRadius) {
+	public static Vector3 getSeperation(Transform queryingTransform, float neighbourhoodRadius, bool normalise) {
 		Vector3 result = new Vector3 (0f, 0f, 0f);
 		
         int neighbourCount = queryingTransform.parent.childCount -1;
+
+        if (neighbourCount < 1) {
+            return result;
+        }
         
         for (int i = 0; i < neighbourCount + 1; i++) {
 
@@ -89,23 +100,28 @@ public static class Flocking {
 			}
 		}
 
-		if (neighbourCount > 0) {
-			result /= neighbourCount;
-			result = Vector3.Normalize (result);
+		result /= neighbourCount;
+
+        if (normalise)
+        {
+            result = Vector3.Normalize (result);
 		}
 
 		return result;
 	}
 
-    public static Vector3 getSeeking(Transform queryingTransform, Transform goal) {
+    public static Vector3 getSeeking(Transform queryingTransform, Transform goal, bool normalise) {
         Vector3 result = new Vector3(0f, 0f, 0f);
         result = goal.position - queryingTransform.position;
-        result = Vector3.Normalize(result);
+
+        if (normalise) {
+            result = Vector3.Normalize(result);
+        }
 
         return result;
     }
 	
-    public static Vector3 getAvoidance(Transform queryingTransform, Transform goal) {
-        return -1f * getSeeking(queryingTransform,goal);
+    public static Vector3 getAvoidance(Transform queryingTransform, Transform goal, bool normalise) {
+        return -1f * getSeeking(queryingTransform,goal, normalise);
     }
 }
