@@ -33,7 +33,6 @@ public class SwarmMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		SwarmList.addMember(this.transform);
 		rb = this.GetComponent<Rigidbody> ();
 		initialPos = this.transform.position;
 		initialRot = this.transform.rotation;
@@ -55,9 +54,9 @@ public class SwarmMovement : MonoBehaviour {
 		}
 		else 
 		{
-			cohesion = SwarmList.getCohesion (this.transform.position, neighbourRadius);
-			seperation = SwarmList.getSeperation(this.transform.position, neighbourRadius);
-			alignment = SwarmList.getAlignment(this.transform.position, neighbourRadius); 
+			cohesion = Flocking.getCohesion (this.transform, neighbourRadius);
+			seperation = Flocking.getSeperation(this.transform, neighbourRadius);
+			alignment = Flocking.getAlignment(this.transform, neighbourRadius); 
 		
 			// For future use cases where a goal does not fit the application context
 			if (goal) {
